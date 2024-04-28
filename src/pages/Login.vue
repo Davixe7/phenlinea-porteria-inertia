@@ -42,6 +42,7 @@ function attemptLogin(){
   .then(response => {
     if( !response.data.user.api_token ) return
     localstorage.set('api_token', response.data.user.api_token)
+    api.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.user.api_token
     router.push('home')
   })
   .catch(error => {

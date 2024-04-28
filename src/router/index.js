@@ -1,6 +1,7 @@
 import { route } from 'quasar/wrappers'
 import { createRouter, createMemoryHistory, createWebHistory, createWebHashHistory } from 'vue-router'
 import routes from './routes'
+import { localstorage } from 'src/boot/localStorage'
 
 /*
  * If not building with SSR mode, you can
@@ -25,6 +26,14 @@ export default route(function (/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> publicPath
     history: createHistory(process.env.VUE_ROUTER_BASE)
   })
+
+  Router.beforeEach((to, from, next) => {
+    if( to.name != 'Login' && !localstorage.get('api_token')){
+      next({name: 'Login'})
+      return
+    }
+    next();
+  });
 
   return Router
 })

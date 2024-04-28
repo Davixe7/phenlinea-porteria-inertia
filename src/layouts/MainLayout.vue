@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout view="hHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
         <q-btn
@@ -22,14 +22,13 @@
     </q-header>
 
     <q-drawer
+      :mini="true"
       v-model="leftDrawerOpen"
       show-if-above
       bordered
     >
       <q-list>
-        <q-item-label
-          header
-        >
+        <q-item-label header>
           Essential Links
         </q-item-label>
 
@@ -38,12 +37,46 @@
           :key="link.title"
           v-bind="link"
         />
+
+        <q-item
+          clickable
+          @click="noveltyDialog=true"
+        >
+          <q-item-section avatar>
+            <q-icon name="support_agent"/>
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Novedades</q-item-label>
+            <q-item-label caption>Registrar una novedad</q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-item clickable @click="deliveryDialog=true">
+          <q-item-section avatar>
+            <q-icon name="sym_o_package_2"/>
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Encomienda</q-item-label>
+            <q-item-label caption>Notificar una encomienda</q-item-label>
+          </q-item-section>
+        </q-item>
       </q-list>
     </q-drawer>
 
     <q-page-container>
       <q-page class="q-pa-md">
         <router-view/>
+
+        <q-dialog v-model="noveltyDialog">
+          <novelty-form></novelty-form>
+        </q-dialog>
+
+        <q-dialog v-model="deliveryDialog">
+          <delivery-form></delivery-form>
+        </q-dialog>
+
       </q-page>
     </q-page-container>
   </q-layout>
@@ -51,52 +84,28 @@
 
 <script setup>
 import { ref } from 'vue'
-import EssentialLink from 'components/EssentialLink.vue'
 import { localstorage } from 'src/boot/localStorage'
 import { useRouter } from 'vue-router';
+import EssentialLink from 'components/EssentialLink.vue'
+
+import NoveltyForm from 'components/NoveltyForm.vue'
+import DeliveryForm from 'components/DeliveryForm.vue'
+
+const noveltyDialog  = ref(false)
+const deliveryDialog = ref(false)
 
 const linksList = [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
+    title: 'Apartamentos',
+    caption: 'Apartamentos',
+    icon: 'meeting_room',
+    link: '/#/apartamentos'
   },
   {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
+    title: 'Visitas',
+    caption: 'Visitas',
+    icon: 'sym_o_location_away',
+    link: '/#/visitas'
   }
 ]
 

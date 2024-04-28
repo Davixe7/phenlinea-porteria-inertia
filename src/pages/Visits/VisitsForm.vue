@@ -130,7 +130,6 @@
 
         <div class="row q-gutter-x-md">
           <q-btn
-            v-if="!visitor.picture"
             primary
             @click="camera = true"
             :loading="loading"
@@ -160,7 +159,7 @@
 
 <script setup>
 import {ref} from 'vue'
-import Camera from './../components/Camera.vue'
+import Camera from './../../components/Camera.vue'
 import { api } from 'src/boot/axios';
 
 const emit            = defineEmits('dataSent')
@@ -199,7 +198,7 @@ function storeVisit() {
 function loadData() {
   let data = new FormData()
   Object.keys(visitor.value)
-  .forEach(key => data.append(key, visitor.value[key]))
+  .forEach(key => data.append(key, visitor.value[key] ? visitor.value[key] : ''))
 
   if( visitor.value.id ){
     data.append('visitor_id', visitor.value.id)
@@ -208,15 +207,5 @@ function loadData() {
   data.append('picture', pictureURL.value)
   data.append('extension_name', extension_name.value)
   return data
-}
-
-function clearForm() {
-  let attributes = ['extension_id', 'arl', 'dni', 'eps', 'name', 'phone', 'plate', 'type', 'company']
-  attributes.forEach(attr => this.visit[attr] = '')
-  this.visit['type'] = 'singular'
-  let that = this
-  setTimeout(function () {
-    Object.values(that.$refs).forEach(input => input.resetValidation())
-  }, 1000)
 }
 </script>

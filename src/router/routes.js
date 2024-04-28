@@ -1,12 +1,14 @@
 
 const routes = [
-  { path: '/login', component: () => import('pages/Login.vue') },
+  { name: 'Login', path: '/login', component: () => import('pages/Login.vue') },
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: 'home', component: () => import('pages/Home.vue') },
-      { path: 'visitas', component: () => import('pages/Visits.vue') }
+      { name: '', path: '', component: () => import('pages/Home.vue') },
+      { name: 'home', path: 'home', component: () => import('pages/Home.vue') },
+      { name: 'visitas', path: 'visitas', component: () => import('pages/Visits/Visits.vue') },
+      { name: 'apartamentos', path: 'apartamentos', component: () => import('pages/Apartments/Apartments.vue') }
     ]
   },
 

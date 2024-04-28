@@ -1,19 +1,17 @@
 <template>
-  <div class="q-pa-md">
-    <q-table
+  <q-table
     :rows="visits"
     :columns="columns"
     row-key="id"
-    :rows-per-page-options="[10, 20, 30]"
-    :pagination="true"
+    :rows-per-page-options="[30]"
   >
-    <template v-slot:top-right>
+    <template v-slot:top>
       <q-input
         v-model="search"
         filled
         dense
         placeholder="Buscar"
-        class="q-mb-md"
+        style="width: 100%;"
       />
     </template>
 
@@ -28,7 +26,7 @@
     <template v-slot:body-cell-qr="props">
       <q-td :props="props">
         <q-avatar @click="()=>{dialogPicture = props.row.qrcode; dialog = true}" color="white">
-          <img v-if="props.row.qrcode" :src="props.row.picture">
+          <img v-if="props.row.qrcode" :src="props.row.qrcode">
         </q-avatar>
       </q-td>
     </template>
@@ -53,7 +51,6 @@
       </q-td>
     </template>
   </q-table>
-  </div>
 
   <q-dialog v-model="dialog">
       <q-card style="width: 700px; max-width: 80vw;">
@@ -70,7 +67,7 @@ import { ref } from 'vue';
 
 const _props = defineProps(['visits'])
 
-const emit      = defineEmits('updateVisit')
+const emit      = defineEmits(['updateVisit'])
 const checkouts = ref([])
 const dialogPicture  = ref(null)
 const dialog  = ref(false)
